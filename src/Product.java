@@ -25,14 +25,53 @@ class Product {
     // Метод для ввода длин сторон детали
     public void inputSideLengths() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите сколько повторяющихся длин в одном комплекте: ");
-        int numberOfDistinctSides = scanner.nextInt();
+        int numberOfDistinctSides = 0;
+
+        while (true) {
+            System.out.print("Введите сколько повторяющихся длин в одном комплекте: ");
+            try {
+                numberOfDistinctSides = scanner.nextInt();
+                if (numberOfDistinctSides <= 0) {
+                    throw new IllegalArgumentException("Количество должно быть положительным.");
+                }
+                break; // Выходим из цикла, если ввод корректен
+            } catch (Exception e) {
+                System.out.println("Ошибка: введите корректное положительное целое число.");
+                scanner.next(); // Очищаем неверный ввод
+            }
+        }
 
         for (int i = 0; i < numberOfDistinctSides; i++) {
-            System.out.print("Введите длину стороны " + (i + 1) + " (в мм): ");
-            double length = scanner.nextDouble();
-            System.out.print("Введите количество сторон длиной " + length + " (в шт.): ");
-            int count = scanner.nextInt();
+            double length = 0;
+            int count = 0;
+
+            while (true) {
+                System.out.print("Введите длину стороны " + (i + 1) + " (в мм): ");
+                try {
+                    length = scanner.nextDouble();
+                    if (length <= 0) {
+                        throw new IllegalArgumentException("Длина должна быть положительной.");
+                    }
+                    break; // Выходим из цикла, если ввод корректен
+                } catch (Exception e) {
+                    System.out.println("Ошибка: введите корректное положительное число для длины.");
+                    scanner.next(); // Очищаем неверный ввод
+                }
+            }
+
+            while (true) {
+                System.out.print("Введите количество сторон длиной " + length + " (в шт.): ");
+                try {
+                    count = scanner.nextInt();
+                    if (count < 0) {
+                        throw new IllegalArgumentException("Количество не может быть отрицательным.");
+                    }
+                    break; // Выходим из цикла, если ввод корректен
+                } catch (Exception e) {
+                    System.out.println("Ошибка: введите корректное целое число для количества.");
+                    scanner.next(); // Очищаем неверный ввод
+                }
+            }
             sideLengths.put(length, sideLengths.getOrDefault(length, 0) + count);
         }
     }
@@ -62,9 +101,24 @@ class Product {
     // Метод расчёта общего расхода на все изделия
     public void totalEdgeLength() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Количество изделий: ");
-        int numberProducts = scanner.nextInt();
+        int numberProducts = 0;
+
+        while (true) {
+            System.out.print("Количество изделий: ");
+            try {
+                numberProducts = scanner.nextInt();
+                if (numberProducts <= 0) {
+                    throw new IllegalArgumentException("Количество должно быть положительным.");
+                }
+                break; // Выходим из цикла, если ввод корректен
+            } catch (Exception e) {
+                System.out.println("Ошибка: введите корректное положительное целое число.");
+                scanner.next(); // Очищаем неверный ввод
+            }
+        }
+
         double result = numberProducts * calculateTotalLength();
         System.out.printf("Общий метраж: %.2f п.м.%n", result);
     }
+
 }
